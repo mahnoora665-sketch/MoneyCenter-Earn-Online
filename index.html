@@ -235,6 +235,11 @@
     </div>
   </div>
 
+  <div class="notice" id="signInBanner" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+    <span><strong>Sign in required:</strong> Connect your Pi account to start earning.</span>
+    <button onclick="initPi()" style="font-family:system-ui,sans-serif; background:var(--teal); color:white; border:none; border-radius:4px; padding:10px 16px; font-size:13px; font-weight:600; cursor:pointer; white-space:nowrap;">Sign in with Pi</button>
+  </div>
+
   <div class="notice">
     <strong>How this works:</strong> Your balance only grows when a task is verified complete or a referral is confirmed.
     Nothing is credited automatically, and we don't simulate or promise earnings. Payout amounts below are examples —
@@ -326,6 +331,8 @@
         const username = (auth.user && auth.user.username) ? auth.user.username : "Pioneer";
         document.getElementById('piUsername').textContent = "@" + username;
         document.getElementById('piUserBox').style.display = 'flex';
+        const banner = document.getElementById('signInBanner');
+        if (banner) banner.style.display = 'none';
       })
       .catch(function(err){
         console.warn("Pi auth error:", err);
@@ -334,6 +341,8 @@
   function onIncompletePaymentFound(payment){
     console.log("Incomplete payment found:", payment);
   }
+  // Try automatically once on load (works in some Pi clients); the visible
+  // "Sign in with Pi" button is the reliable path when auto sign-in is blocked.
   window.addEventListener('load', initPi);
 
   function copyRef(){
