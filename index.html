@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1" />
   <meta name="description" content="MoneyCenter is the web's most popular earning platform. The fastest growing earning network to make money online from anywhere, anytime." />
   <title>User Home - MoneyCenter</title>
+  <!-- Pi Network SDK -->
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
   <style>
     :root {
       --green: #00c853;
@@ -372,7 +374,24 @@
     .nav-item.active { color: var(--green); }
     .nav-item .nav-icon { font-size: 22px; }
 
-    /* DARK MODE TOGGLE */
+    .pi-user-box {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 4px 10px 4px 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: white;
+    }
+    .pi-avatar {
+      width: 24px; height: 24px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+    }
     .mode-row {
       margin: 0 12px 12px;
       background: var(--card);
@@ -434,6 +453,10 @@
   <div class="header">
     <div class="header-logo">Money<span>Center</span></div>
     <div class="header-icons">
+      <div class="pi-user-box" id="piUserBox">
+        <div class="pi-avatar">π</div>
+        <span id="piUsername">@Pioneer</span>
+      </div>
       <button onclick="toggleDark()" id="darkBtn" title="Dark Mode">🌙</button>
       <button onclick="window.location='#'" title="Tutorial">❓</button>
       <button onclick="window.location='#'" title="Profile">👤</button>
@@ -655,6 +678,30 @@
   </div>
 
   <script>
+    // ── Pi Network Authentication ──
+    const PI_APP_NAME = "MoneyCenter";
+
+    function initPi() {
+      if (typeof Pi === 'undefined') return;
+      Pi.init({ version: "2.0", sandbox: false });
+      Pi.authenticate(["username", "payments"], onIncompletePaymentFound)
+        .then(function(auth) {
+          const username = auth.user && auth.user.username ? auth.user.username : "Pioneer";
+          document.getElementById('piUsername').textContent = "@" + username;
+          document.getElementById('piUserBox').style.display = 'flex';
+        })
+        .catch(function(err) {
+          console.warn("Pi auth error:", err);
+        });
+    }
+
+    function onIncompletePaymentFound(payment) {
+      // Handle incomplete payments — required by Pi SDK
+      console.log("Incomplete payment found:", payment);
+    }
+
+    window.addEventListener('load', initPi);
+
     // Dark Mode
     let isDark = false;
     function toggleDark() {
