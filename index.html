@@ -1,776 +1,348 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1" />
-  <meta name="description" content="MoneyCenter is the web's most popular earning platform. The fastest growing earning network to make money online from anywhere, anytime." />
-  <title>User Home - MoneyCenter</title>
-  <!-- Pi Network SDK -->
-  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-  <style>
-    :root {
-      --green: #00c853;
-      --green-light: #69f0ae;
-      --green-dark: #009624;
-      --bg: #f4f7f4;
-      --card: #ffffff;
-      --text: #1a2e1a;
-      --text-muted: #6b7c6b;
-      --border: #e0ebe0;
-      --accent: #ff6f00;
-      --gold: #ffc107;
-      --nav-bg: #ffffff;
-      --header-bg: #00c853;
-      --shadow: 0 2px 12px rgba(0,0,0,0.08);
-      --radius: 14px;
-    }
-    .dark {
-      --bg: #101c10;
-      --card: #1a2e1a;
-      --text: #e8f5e8;
-      --text-muted: #8aaa8a;
-      --border: #2a3f2a;
-      --nav-bg: #1a2e1a;
-      --shadow: 0 2px 12px rgba(0,0,0,0.4);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      transition: background 0.3s, color 0.3s;
-      padding-bottom: 70px;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tallyline — Earn from real tasks</title>
+<script src="https://sdk.minepi.com/pi-sdk.js"></script>
+<style>
+  :root{
+    --ink:#13231f;
+    --paper:#f3efe6;
+    --card:#ffffff;
+    --line:#e2dccd;
+    --teal:#1d6b5b;
+    --teal-deep:#123f35;
+    --amber:#c97b2e;
+    --muted:#6b7468;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Iowan Old Style','Georgia',serif;
+    background:var(--paper);
+    color:var(--ink);
+    min-height:100vh;
+    padding-bottom:76px;
+  }
+  .header{
+    background:var(--teal-deep);
+    color:#f3efe6;
+    padding:18px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:sticky; top:0; z-index:10;
+  }
+  .wordmark{font-size:21px; font-weight:700; letter-spacing:0.3px;}
+  .wordmark em{font-style:normal; color:#9fd8c6;}
+  .header-sub{font-size:11px; color:#b9cfc7; font-family:system-ui,sans-serif; letter-spacing:0.4px; margin-top:2px;}
 
-    /* HEADER */
-    .header {
-      background: linear-gradient(135deg, #00c853, #009624);
-      color: white;
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 8px rgba(0,150,36,0.3);
-    }
-    .header-logo {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-    }
-    .header-logo span { color: var(--green-light); }
-    .header-icons { display: flex; gap: 12px; align-items: center; }
-    .header-icons button {
-      background: rgba(255,255,255,0.2);
-      border: none;
-      color: white;
-      border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .header-icons button:hover { background: rgba(255,255,255,0.35); }
+  .ledger-strip{
+    display:flex;
+    border-bottom:1px solid var(--line);
+    background:var(--card);
+  }
+  .ledger-cell{
+    flex:1;
+    padding:18px 16px;
+    text-align:center;
+    border-right:1px solid var(--line);
+  }
+  .ledger-cell:last-child{border-right:none;}
+  .ledger-label{
+    font-family:system-ui,sans-serif;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    color:var(--muted);
+  }
+  .ledger-amount{font-size:26px; font-weight:700; margin-top:4px;}
 
-    /* ANNOUNCEMENT BANNER */
-    .banner {
-      background: linear-gradient(90deg, #ff6f00, #ffc107);
-      color: white;
-      font-size: 13px;
-      font-weight: 600;
-      padding: 10px 16px;
-      overflow: hidden;
-    }
-    .banner-scroll { animation: marquee 18s linear infinite; white-space: nowrap; display: inline-block; }
-    @keyframes marquee { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
+  .section{padding:22px 20px 6px;}
+  .section h2{
+    font-size:13px;
+    font-family:system-ui,sans-serif;
+    text-transform:uppercase;
+    letter-spacing:1.2px;
+    color:var(--muted);
+    border-bottom:1px solid var(--line);
+    padding-bottom:8px;
+    margin-bottom:14px;
+  }
 
-    /* STEPS */
-    .steps {
-      background: var(--card);
-      margin: 12px;
-      border-radius: var(--radius);
-      padding: 14px 16px;
-      box-shadow: var(--shadow);
-      border-left: 4px solid var(--green);
-    }
-    .steps p {
-      font-size: 13px;
-      color: var(--text-muted);
-      padding: 3px 0;
-    }
-    .steps p strong { color: var(--green-dark); }
+  .notice{
+    margin:18px 20px 0;
+    background:#fdf6e9;
+    border:1px solid #e7cf9a;
+    border-radius:4px;
+    padding:14px 16px;
+    font-family:system-ui,sans-serif;
+    font-size:13px;
+    line-height:1.5;
+    color:#5c4a1e;
+  }
+  .notice strong{color:#3d2f0f;}
 
-    /* WHATSAPP CONNECT */
-    .wa-box {
-      margin: 0 12px 12px;
-      background: linear-gradient(135deg, #25D366, #128C7E);
-      border-radius: var(--radius);
-      padding: 16px;
-      color: white;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      box-shadow: 0 4px 16px rgba(37,211,102,0.3);
-    }
-    .wa-icon { font-size: 38px; }
-    .wa-text h3 { font-size: 15px; font-weight: 700; }
-    .wa-text p { font-size: 12px; opacity: 0.9; margin-top: 3px; }
-    .wa-status {
-      margin-left: auto;
-      background: rgba(255,255,255,0.2);
-      border: 2px solid white;
-      color: white;
-      border-radius: 20px;
-      padding: 6px 14px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
-    }
+  .task-list{display:flex; flex-direction:column; gap:10px;}
+  .task-row{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .task-num{
+    font-size:12px;
+    color:var(--muted);
+    font-family:system-ui,sans-serif;
+    width:18px;
+  }
+  .task-body{flex:1;}
+  .task-title{font-size:15px; font-weight:600;}
+  .task-meta{
+    font-family:system-ui,sans-serif;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+  .task-pay{
+    font-family:system-ui,sans-serif;
+    font-size:14px;
+    font-weight:700;
+    color:var(--teal);
+    white-space:nowrap;
+  }
+  .task-pay .pending{
+    display:block;
+    font-size:10px;
+    font-weight:600;
+    color:var(--amber);
+    text-transform:uppercase;
+    letter-spacing:0.4px;
+  }
 
-    /* BALANCE CARDS */
-    .balance-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin: 0 12px 12px;
-    }
-    .balance-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 16px;
-      box-shadow: var(--shadow);
-      text-align: center;
-      border-top: 3px solid var(--green);
-    }
-    .balance-card .label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-    .balance-card .amount { font-size: 26px; font-weight: 800; color: var(--green-dark); margin-top: 4px; }
+  .referral-card{
+    margin:0 20px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:18px;
+  }
+  .referral-card h3{font-size:16px; margin-bottom:6px;}
+  .referral-card p{
+    font-family:system-ui,sans-serif;
+    font-size:13px;
+    color:var(--muted);
+    line-height:1.5;
+    margin-bottom:14px;
+  }
+  .ref-row{display:flex; gap:8px;}
+  .ref-input{
+    flex:1;
+    font-family:system-ui,sans-serif;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:10px 12px;
+    font-size:12px;
+    color:var(--ink);
+    overflow:hidden; white-space:nowrap; text-overflow:ellipsis;
+  }
+  .copy-btn{
+    font-family:system-ui,sans-serif;
+    background:var(--teal);
+    color:white;
+    border:none;
+    border-radius:4px;
+    padding:10px 16px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .ref-terms{
+    margin-top:12px;
+    font-family:system-ui,sans-serif;
+    font-size:11px;
+    color:var(--muted);
+    border-top:1px dashed var(--line);
+    padding-top:10px;
+    line-height:1.5;
+  }
 
-    /* FACEBOOK BONUS */
-    .fb-bonus {
-      margin: 0 12px 12px;
-      background: #1877f2;
-      border-radius: var(--radius);
-      padding: 14px 16px;
-      color: white;
-    }
-    .fb-bonus h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
-    .fb-bonus ul { padding-left: 18px; font-size: 12px; line-height: 1.8; }
-    .fb-bonus .fb-amounts { display: flex; gap: 10px; margin-top: 10px; }
-    .fb-badge {
-      background: rgba(255,255,255,0.2);
-      border-radius: 8px;
-      padding: 8px 12px;
-      text-align: center;
-      flex: 1;
-    }
-    .fb-badge .big { font-size: 20px; font-weight: 800; }
-    .fb-badge .small { font-size: 10px; opacity: 0.85; }
+  .history{
+    margin:18px 20px 0;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:16px;
+  }
+  .history h3{font-size:15px; margin-bottom:10px;}
+  .empty-state{
+    font-family:system-ui,sans-serif;
+    font-size:13px;
+    color:var(--muted);
+    text-align:center;
+    padding:20px 10px;
+    line-height:1.6;
+  }
 
-    /* EARNINGS WAYS */
-    .section-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin: 16px 12px 8px;
-    }
-    .earn-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin: 0 12px 12px;
-    }
-    .earn-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 14px;
-      box-shadow: var(--shadow);
-      text-decoration: none;
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      transition: transform 0.15s;
-      border: 1px solid var(--border);
-    }
-    .earn-card:hover { transform: translateY(-2px); }
-    .earn-card .icon { font-size: 26px; }
-    .earn-card .earn-label { font-size: 13px; font-weight: 600; line-height: 1.3; }
-    .earn-card .earn-amount { font-size: 13px; color: var(--green); font-weight: 700; }
+  .toast{
+    position:fixed;
+    bottom:84px;
+    left:50%;
+    transform:translateX(-50%);
+    background:var(--ink);
+    color:#f3efe6;
+    font-family:system-ui,sans-serif;
+    padding:10px 18px;
+    border-radius:24px;
+    font-size:13px;
+    display:none;
+    z-index:999;
+    white-space:nowrap;
+  }
+  .toast.show{display:block;}
 
-    /* REFERRAL */
-    .referral-box {
-      margin: 0 12px 12px;
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 16px;
-      box-shadow: var(--shadow);
-    }
-    .referral-box h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
-    .referral-box p { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
-    .ref-link-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .ref-link-input {
-      flex: 1;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 9px 12px;
-      font-size: 12px;
-      color: var(--text-muted);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .copy-btn {
-      background: var(--green);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 9px 14px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .share-row {
-      display: flex;
-      gap: 10px;
-      margin-top: 12px;
-    }
-    .share-btn {
-      flex: 1;
-      border: none;
-      border-radius: 8px;
-      padding: 10px;
-      font-size: 18px;
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
-    .share-btn:hover { opacity: 0.8; }
-    .share-wa { background: #25D366; }
-    .share-tg { background: #0088cc; }
-    .share-fb { background: #1877f2; }
-    .share-tw { background: #1da1f2; }
-
-    /* STATS */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin: 0 12px 12px;
-    }
-    .stat-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 14px;
-      box-shadow: var(--shadow);
-      text-align: center;
-      border: 1px solid var(--border);
-    }
-    .stat-card .stat-num { font-size: 28px; font-weight: 800; color: var(--green); }
-    .stat-card .stat-label { font-size: 11px; color: var(--text-muted); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
-
-    /* LEADERBOARD */
-    .leaderboard {
-      margin: 0 12px 12px;
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 16px;
-      box-shadow: var(--shadow);
-    }
-    .leaderboard h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
-    .leader-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 8px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .leader-item:last-child { border-bottom: none; }
-    .rank {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 800;
-      flex-shrink: 0;
-    }
-    .rank-1 { background: linear-gradient(135deg, #ffd700, #ffa000); color: white; }
-    .rank-2 { background: linear-gradient(135deg, #c0c0c0, #9e9e9e); color: white; }
-    .rank-3 { background: linear-gradient(135deg, #cd7f32, #a0522d); color: white; }
-    .rank-other { background: var(--border); color: var(--text-muted); }
-    .leader-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      object-fit: cover;
-      flex-shrink: 0;
-      background: var(--green-light);
-    }
-    .leader-name { font-size: 13px; font-weight: 600; flex: 1; }
-    .leader-amount { font-size: 13px; font-weight: 800; color: var(--green); }
-
-    /* NOTIFICATION TOAST */
-    .toast {
-      position: fixed;
-      bottom: 80px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #1a2e1a;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 30px;
-      font-size: 13px;
-      font-weight: 600;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-      z-index: 999;
-      display: none;
-      align-items: center;
-      gap: 8px;
-      white-space: nowrap;
-    }
-    .toast.show { display: flex; animation: fadeInUp 0.3s ease; }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
-
-    /* BOTTOM NAV */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--nav-bg);
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-around;
-      padding: 8px 0 10px;
-      z-index: 100;
-      box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
-    }
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      text-decoration: none;
-      color: var(--text-muted);
-      font-size: 10px;
-      font-weight: 600;
-      cursor: pointer;
-      padding: 0 8px;
-      transition: color 0.2s;
-    }
-    .nav-item.active { color: var(--green); }
-    .nav-item .nav-icon { font-size: 22px; }
-
-    .pi-user-box {
-      display: none;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255,255,255,0.2);
-      border-radius: 20px;
-      padding: 4px 10px 4px 6px;
-      font-size: 12px;
-      font-weight: 700;
-      color: white;
-    }
-    .pi-avatar {
-      width: 24px; height: 24px;
-      background: var(--gold);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px;
-    }
-    .mode-row {
-      margin: 0 12px 12px;
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 14px 16px;
-      box-shadow: var(--shadow);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .mode-row span { font-size: 14px; font-weight: 600; }
-    .toggle {
-      width: 46px;
-      height: 26px;
-      background: var(--border);
-      border-radius: 13px;
-      position: relative;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .toggle.on { background: var(--green); }
-    .toggle::after {
-      content: '';
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: white;
-      border-radius: 50%;
-      top: 3px;
-      left: 3px;
-      transition: transform 0.3s;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-    }
-    .toggle.on::after { transform: translateX(20px); }
-
-    /* PAYMENT POPUP TOAST */
-    .pay-toast {
-      position: fixed;
-      top: 70px;
-      right: 12px;
-      background: var(--card);
-      border: 1px solid var(--green);
-      border-radius: 12px;
-      padding: 12px 14px;
-      box-shadow: 0 4px 20px rgba(0,200,83,0.2);
-      z-index: 200;
-      max-width: 240px;
-      display: none;
-    }
-    .pay-toast.show { display: block; animation: slideIn 0.4s ease; }
-    @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-    .pay-toast .pay-title { font-size: 12px; font-weight: 700; color: var(--green); }
-    .pay-toast .pay-msg { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
-  </style>
+  .bottom-nav{
+    position:fixed; bottom:0; left:0; right:0;
+    background:var(--card);
+    border-top:1px solid var(--line);
+    display:flex;
+    justify-content:space-around;
+    padding:10px 0;
+    font-family:system-ui,sans-serif;
+  }
+  .nav-item{
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    font-size:10px; color:var(--muted); font-weight:600;
+  }
+  .nav-item.active{color:var(--teal);}
+  .nav-icon{font-size:20px;}
+</style>
 </head>
 <body>
 
-  <!-- HEADER -->
   <div class="header">
-    <div class="header-logo">Money<span>Center</span></div>
-    <div class="header-icons">
-      <div class="pi-user-box" id="piUserBox">
-        <div class="pi-avatar">π</div>
-        <span id="piUsername">@Pioneer</span>
+    <div>
+      <div class="wordmark">Tally<em>line</em></div>
+      <div class="header-sub">Get paid for tasks you actually complete</div>
+    </div>
+    <div id="piUserBox" style="display:none; align-items:center; gap:6px; background:rgba(255,255,255,0.15); border-radius:20px; padding:4px 10px 4px 6px; font-family:system-ui,sans-serif; font-size:12px; font-weight:600;">
+      <span style="width:22px;height:22px;background:#c97b2e;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;">π</span>
+      <span id="piUsername">@Pioneer</span>
+    </div>
+  </div>
+
+  <div class="notice">
+    <strong>How this works:</strong> Your balance only grows when a task is verified complete or a referral is confirmed.
+    Nothing is credited automatically, and we don't simulate or promise earnings. Payout amounts below are examples —
+    actual pay depends on the task provider and may change.
+  </div>
+
+  <div class="ledger-strip" style="margin:18px 20px 0; border:1px solid var(--line); border-radius:4px; overflow:hidden;">
+    <div class="ledger-cell">
+      <div class="ledger-label">Available balance</div>
+      <div class="ledger-amount">$0.00</div>
+    </div>
+    <div class="ledger-cell">
+      <div class="ledger-label">Pending verification</div>
+      <div class="ledger-amount">$0.00</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Tasks open today</h2>
+    <div class="task-list">
+      <div class="task-row">
+        <div class="task-num">01</div>
+        <div class="task-body">
+          <div class="task-title">5-minute product survey</div>
+          <div class="task-meta">Verified by survey provider · ~5 min</div>
+        </div>
+        <div class="task-pay">$0.40<span class="pending">on completion</span></div>
       </div>
-      <button onclick="toggleDark()" id="darkBtn" title="Dark Mode">🌙</button>
-      <button onclick="window.location='#'" title="Tutorial">❓</button>
-      <button onclick="window.location='#'" title="Profile">👤</button>
-    </div>
-  </div>
-
-  <!-- ANNOUNCEMENT BANNER -->
-  <div class="banner">
-    <span class="banner-scroll">🎉🔥 1. Connect WhatsApp to start earning! 💰 &nbsp;&nbsp;&nbsp; 🎉🔥 2. Complete tasks to earn rewards! 💰 &nbsp;&nbsp;&nbsp; 🎉🔥 3. Bind your bank account to withdraw! 💰 &nbsp;&nbsp;&nbsp;</span>
-  </div>
-
-  <!-- STEPS -->
-  <div class="steps">
-    <p>✅ <strong>Step 1:</strong> Connect WhatsApp and start earning.</p>
-    <p>✅ <strong>Step 2:</strong> Complete tasks to earn rewards.</p>
-    <p>✅ <strong>Step 3:</strong> Bind your bank account to withdraw.</p>
-  </div>
-
-  <!-- WHATSAPP CONNECT -->
-  <div class="wa-box">
-    <div class="wa-icon">📱</div>
-    <div class="wa-text">
-      <h3>Earn $20 / 24 Hours</h3>
-      <p>Keep WhatsApp connected online for 24 hours</p>
-    </div>
-    <button class="wa-status" onclick="toggleWA(this)">Connect</button>
-  </div>
-
-  <!-- BALANCE CARDS -->
-  <div class="balance-row">
-    <div class="balance-card">
-      <div class="label">Total Earnings</div>
-      <div class="amount">$100.00</div>
-    </div>
-    <div class="balance-card">
-      <div class="label">My Balance</div>
-      <div class="amount">$100.00</div>
-    </div>
-  </div>
-
-  <!-- FACEBOOK BONUS -->
-  <div class="fb-bonus">
-    <h4>🔥 Facebook Referral Bonus – Huge Bonus!</h4>
-    <ul>
-      <li>Share your link on Facebook</li>
-      <li>Enjoy extra bonus whenever someone clicks or signs up</li>
-    </ul>
-    <div class="fb-amounts">
-      <div class="fb-badge">
-        <div class="big">$4</div>
-        <div class="small">Per Click (FB Only)</div>
+      <div class="task-row">
+        <div class="task-num">02</div>
+        <div class="task-body">
+          <div class="task-title">Install and open a partner app</div>
+          <div class="task-meta">Verified by app network · install required</div>
+        </div>
+        <div class="task-pay">$0.75<span class="pending">on completion</span></div>
       </div>
-      <div class="fb-badge">
-        <div class="big">$40</div>
-        <div class="small">Per Signup (FB Only)</div>
+      <div class="task-row">
+        <div class="task-num">03</div>
+        <div class="task-body">
+          <div class="task-title">Watch a sponsored video</div>
+          <div class="task-meta">Verified by ad network · 30 sec watch</div>
+        </div>
+        <div class="task-pay">$0.05<span class="pending">on completion</span></div>
       </div>
     </div>
   </div>
 
-  <!-- EARNING WAYS -->
-  <div class="section-title">⚡ Ways to Earn</div>
-  <div class="earn-grid">
-    <a class="earn-card" href="#">
-      <div class="icon">👥</div>
-      <div class="earn-label">Refer People</div>
-      <div class="earn-amount">Earn $20+</div>
-    </a>
-    <a class="earn-card" href="#">
-      <div class="icon">📲</div>
-      <div class="earn-label">Test Apps</div>
-      <div class="earn-amount">Earn $20+</div>
-    </a>
-    <a class="earn-card" href="#">
-      <div class="icon">📋</div>
-      <div class="earn-label">Quick Surveys</div>
-      <div class="earn-amount">Earn $20+</div>
-    </a>
-    <a class="earn-card" href="#">
-      <div class="icon">🎬</div>
-      <div class="earn-label">Watch Videos</div>
-      <div class="earn-amount">Earn $20+</div>
-    </a>
+  <div class="section">
+    <h2>Refer a friend</h2>
   </div>
-
-  <!-- REFERRAL BOX -->
-  <div class="referral-box">
-    <h3>🔗 Refer & Earn With Friends</h3>
-    <p>Earn <strong>$2</strong> per click & <strong>$20</strong> per signup. Get 10% rake from friends' earnings!</p>
-    <div class="ref-link-row">
-      <div class="ref-link-input" id="refLink">https://moneycenter.xylif.com/ref/yourcode</div>
+  <div class="referral-card">
+    <h3>Share your link</h3>
+    <p>You earn a referral bonus only after your friend signs up <em>and</em> completes their first verified task — not just for clicks.</p>
+    <div class="ref-row">
+      <div class="ref-input" id="refLink">https://tallyline.example/ref/yourcode</div>
       <button class="copy-btn" onclick="copyRef()">Copy</button>
     </div>
-    <div class="share-row">
-      <button class="share-btn share-wa" onclick="shareWA()" title="WhatsApp">💬</button>
-      <button class="share-btn share-tg" onclick="shareTG()" title="Telegram">✈️</button>
-      <button class="share-btn share-fb" onclick="shareFB()" title="Facebook">📘</button>
-      <button class="share-btn share-tw" onclick="shareTW()" title="Twitter">🐦</button>
+    <div class="ref-terms">
+      Referral bonus: $1.00, paid after your friend's first verified task. No reward for unconfirmed clicks or signups alone.
     </div>
   </div>
 
-  <!-- STATS -->
-  <div class="section-title">📊 My Stats</div>
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-num">0</div>
-      <div class="stat-label">Clicks</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num">0</div>
-      <div class="stat-label">Referrals</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num">0</div>
-      <div class="stat-label">Offers</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num">0</div>
-      <div class="stat-label">Referral Bonus</div>
+  <div class="history">
+    <h3>Earning history</h3>
+    <div class="empty-state">
+      Nothing here yet. Completed and verified tasks will show up in this list with the date, amount, and status.
     </div>
   </div>
 
-  <!-- DARK MODE TOGGLE -->
-  <div class="mode-row">
-    <span>🌙 Dark Mode</span>
-    <div class="toggle" id="darkToggle" onclick="toggleDark()"></div>
-  </div>
+  <div class="toast" id="toast">Link copied</div>
 
-  <!-- LEADERBOARD -->
-  <div class="leaderboard">
-    <h3>🏆 Top 10 All Time</h3>
-    <div class="leader-item">
-      <div class="rank rank-1">1</div>
-      <img class="leader-avatar" src="https://static.tenux.site/static/wangzhuan/images/user2.jpg" alt="avatar" onerror="this.style.background='#69f0ae'">
-      <div class="leader-name">@madmaxleia</div>
-      <div class="leader-amount">$602,124</div>
-    </div>
-    <div class="leader-item">
-      <div class="rank rank-2">2</div>
-      <img class="leader-avatar" src="https://static.tenux.site/static/wangzhuan/images/user3.jpg" alt="avatar" onerror="this.style.background='#69f0ae'">
-      <div class="leader-name">@Stleegg</div>
-      <div class="leader-amount">$539,855</div>
-    </div>
-    <div class="leader-item">
-      <div class="rank rank-3">3</div>
-      <img class="leader-avatar" src="https://static.tenux.site/static/wangzhuan/images/user1.jpg" alt="avatar" onerror="this.style.background='#69f0ae'">
-      <div class="leader-name">@Ening2007</div>
-      <div class="leader-amount">$511,246</div>
-    </div>
-    <div class="leader-item">
-      <div class="rank rank-other">4</div>
-      <img class="leader-avatar" src="https://static.tenux.site/static/wangzhuan/images/user4.jpg" alt="avatar" onerror="this.style.background='#69f0ae'">
-      <div class="leader-name">@Thoicebat</div>
-      <div class="leader-amount">$436,362</div>
-    </div>
-    <div class="leader-item">
-      <div class="rank rank-other">5</div>
-      <img class="leader-avatar" src="https://static.tenux.site/static/wangzhuan/images/user5.jpg" alt="avatar" onerror="this.style.background='#69f0ae'">
-      <div class="leader-name">@Behisebl</div>
-      <div class="leader-amount">$433,825</div>
-    </div>
-    <div class="leader-item">
-      <div class="rank rank-other">6</div>
-      <img class="leader-avatar" src="https://static.tenux.site/static/wangzhuan/images/user6.jpg" alt="avatar" onerror="this.style.background='#69f0ae'">
-      <div class="leader-name">@Tinfiedfox</div>
-      <div class="leader-amount">$422,447</div>
-    </div>
-    <div class="leader-item">
-      <div class="rank rank-other">7</div>
-      <img class="leader-avatar" src="https://static.tenux.site/static/wangzhuan/images/user7.jpg" alt="avatar" onerror="this.style.background='#69f0ae'">
-      <div class="leader-name">@Voredice</div>
-      <div class="leader-amount">$362,636</div>
-    </div>
-    <div class="leader-item">
-      <div class="rank rank-other">8</div>
-      <img class="leader-avatar" src="https://static.tenux.site/static/wangzhuan/images/user8.jpg" alt="avatar" onerror="this.style.background='#69f0ae'">
-      <div class="leader-name">@Poesedokra</div>
-      <div class="leader-amount">$331,667</div>
-    </div>
-    <div class="leader-item">
-      <div class="rank rank-other">9</div>
-      <img class="leader-avatar" src="https://static.tenux.site/static/wangzhuan/images/user9.jpg" alt="avatar" onerror="this.style.background='#69f0ae'">
-      <div class="leader-name">@Warlgpie</div>
-      <div class="leader-amount">$305,378</div>
-    </div>
-    <div class="leader-item">
-      <div class="rank rank-other">10</div>
-      <img class="leader-avatar" src="https://static.tenux.site/static/wangzhuan/images/user10.jpg" alt="avatar" onerror="this.style.background='#69f0ae'">
-      <div class="leader-name">@Obliefig</div>
-      <div class="leader-amount">$291,338</div>
-    </div>
-  </div>
-
-  <!-- COPY TOAST -->
-  <div class="toast" id="toast">✅ Referral Link Copied!</div>
-
-  <!-- PAYMENT TOAST -->
-  <div class="pay-toast" id="payToast">
-    <div class="pay-title">💰 MoneyCenter</div>
-    <div class="pay-msg" id="payMsg">New payment sent!</div>
-  </div>
-
-  <!-- BOTTOM NAV -->
   <div class="bottom-nav">
-    <div class="nav-item active">
-      <span class="nav-icon">🏠</span>Home
-    </div>
-    <div class="nav-item">
-      <span class="nav-icon">👥</span>Invites
-    </div>
-    <div class="nav-item">
-      <span class="nav-icon">📋</span>Tasks
-    </div>
-    <div class="nav-item">
-      <span class="nav-icon">🎬</span>Videos
-    </div>
-    <div class="nav-item">
-      <span class="nav-icon">💵</span>Cash Out
-    </div>
+    <div class="nav-item active"><span class="nav-icon">🏠</span>Home</div>
+    <div class="nav-item"><span class="nav-icon">✅</span>Tasks</div>
+    <div class="nav-item"><span class="nav-icon">👥</span>Invites</div>
+    <div class="nav-item"><span class="nav-icon">💵</span>Cash out</div>
   </div>
 
-  <script>
-    // ── Pi Network Authentication ──
-    const PI_APP_NAME = "MoneyCenter";
+<script>
+  // Pi Network sign-in — required for Pi Desktop / App Studio to verify the app
+  function initPi(){
+    if (typeof Pi === 'undefined') {
+      console.warn('Pi SDK did not load');
+      return;
+    }
+    Pi.init({ version: "2.0", sandbox: true }); // set sandbox:false only for a published, reviewed app
+    Pi.authenticate(["username", "payments"], onIncompletePaymentFound)
+      .then(function(auth){
+        const username = (auth.user && auth.user.username) ? auth.user.username : "Pioneer";
+        document.getElementById('piUsername').textContent = "@" + username;
+        document.getElementById('piUserBox').style.display = 'flex';
+      })
+      .catch(function(err){
+        console.warn("Pi auth error:", err);
+      });
+  }
+  function onIncompletePaymentFound(payment){
+    console.log("Incomplete payment found:", payment);
+  }
+  window.addEventListener('load', initPi);
 
-    function initPi() {
-      if (typeof Pi === 'undefined') return;
-      Pi.init({ version: "2.0", sandbox: false });
-      Pi.authenticate(["username", "payments"], onIncompletePaymentFound)
-        .then(function(auth) {
-          const username = auth.user && auth.user.username ? auth.user.username : "Pioneer";
-          document.getElementById('piUsername').textContent = "@" + username;
-          document.getElementById('piUserBox').style.display = 'flex';
-        })
-        .catch(function(err) {
-          console.warn("Pi auth error:", err);
-        });
-    }
-
-    function onIncompletePaymentFound(payment) {
-      // Handle incomplete payments — required by Pi SDK
-      console.log("Incomplete payment found:", payment);
-    }
-
-    window.addEventListener('load', initPi);
-
-    // Dark Mode
-    let isDark = false;
-    function toggleDark() {
-      isDark = !isDark;
-      document.body.classList.toggle('dark', isDark);
-      document.getElementById('darkToggle').classList.toggle('on', isDark);
-      document.getElementById('darkBtn').textContent = isDark ? '☀️' : '🌙';
-    }
-
-    // WhatsApp Connect Toggle
-    function toggleWA(btn) {
-      if (btn.textContent === 'Connect') {
-        btn.textContent = 'Connected ✅';
-        btn.style.background = 'rgba(255,255,255,0.35)';
-        showToastMsg('✅ WhatsApp Connected! Earning $20 in 24 hrs');
-      } else {
-        btn.textContent = 'Connect';
-        btn.style.background = '';
-      }
-    }
-
-    // Copy Referral Link
-    function copyRef() {
-      const link = document.getElementById('refLink').textContent;
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(link).catch(() => {});
-      }
-      showToastMsg('✅ Referral Link Copied!');
-    }
-
-    function showToastMsg(msg) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2500);
-    }
-
-    // Share Functions
-    function shareWA() {
-      window.open('whatsapp://send?text=MoneyCenter%20is%20the%20%231%20earning%20platform!%20Join%20now%20https%3A%2F%2Fmoneycenter.xylif.com%2F');
-    }
-    function shareTG() {
-      window.open('https://t.me/share/url?url=https://moneycenter.xylif.com/&text=Join MoneyCenter and start earning!');
-    }
-    function shareFB() {
-      window.open('https://www.facebook.com/sharer/sharer.php?u=https://moneycenter.xylif.com/');
-    }
-    function shareTW() {
-      window.open('https://twitter.com/intent/tweet?url=https://moneycenter.xylif.com/&text=Join MoneyCenter!');
-    }
-
-    // Payment Pop Toasts
-    const payments = [
-      { user: 'Ali', amount: '$42', account: 'JazzCash' },
-      { user: 'Fatima', amount: '$85', account: 'EasyPaisa' },
-      { user: 'Usman', amount: '$120', account: 'bank' },
-      { user: 'Sara', amount: '$60', account: 'JazzCash' },
-    ];
-    let pi = 0;
-    function showPayToast() {
-      const p = payments[pi % payments.length];
-      pi++;
-      document.getElementById('payMsg').textContent = `MoneyCenter paid ${p.amount} to ${p.user}'s ${p.account}!`;
-      const t = document.getElementById('payToast');
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 4000);
-    }
-    setInterval(showPayToast, 8000);
-    setTimeout(showPayToast, 2000);
-  </script>
+  function copyRef(){
+    const link = document.getElementById('refLink').textContent;
+    if(navigator.clipboard){ navigator.clipboard.writeText(link).catch(()=>{}); }
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 2000);
+  }
+</script>
 </body>
 </html>
